@@ -1,0 +1,40 @@
+{
+  "name": "@vroskus/build-web",
+  "version": "1.0.0",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vroskus/build-web.git"
+  },
+  "description": "Tool for building javascript projects",
+  "author": "Vilius Roškus",
+  "keywords": [
+    "esbuild"
+  ],
+  "engines": {
+    "node": ">=12"
+  },
+  "main": "dist/index.js",
+  "files": [
+    "dist/"
+  ],
+  "bin": {
+    "build": "bin/index.js"
+  },
+  "scripts": {
+    "test": "echo 'No tests yet'"
+  },
+  "dependencies": {
+    "commander": "^12.0.0",
+    "esbuild": "^0.20.0",
+    "esbuild-plugin-flow": "^0.3.2",
+    "esbuild-plugin-istanbul": "^0.3.0",
+    "esbuild-plugin-sass": "^1.0.1",
+    "esbuild-plugin-tsc": "^0.4.0",
+    "typescript": "^5.3.3"
+  },
+  "bugs": {
+    "url": "https://github.com/vroskus/build-web/issues"
+  },
+  "homepage": "https://github.com/vroskus/build-web#readme"
+}
