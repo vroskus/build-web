@@ -25,9 +25,9 @@ const options = program.opts();
 
 const {
   coverage,
-  indexHtmlDirPath,
-  inputFilePath,
-  outputDirPath,
+  indexHtmlDir,
+  inputFile,
+  outputDir,
   serve,
   sourcemap,
   types,
@@ -35,9 +35,9 @@ const {
 
 const config = {
   coverage,
-  indexHtmlDirPath,
-  inputFilePath,
-  outputDirPath,
+  indexHtmlDirPath: indexHtmlDir,
+  inputFilePath: inputFile,
+  outputDirPath: outputDir,
   servePort: serve,
   sourcemap,
   types,
