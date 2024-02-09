@@ -28,7 +28,7 @@ const {
   indexHtmlDirPath,
   inputFilePath,
   outputDirPath,
-  servePort,
+  serve,
   sourcemap,
   types,
 } = options;
@@ -38,7 +38,7 @@ const config = {
   indexHtmlDirPath,
   inputFilePath,
   outputDirPath,
-  servePort,
+  servePort: serve,
   sourcemap,
   types,
 };
