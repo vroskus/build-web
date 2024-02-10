@@ -18,7 +18,7 @@ const preparedSettings = ({
   types,
 }) => {
   const plugins = [
-    types === 'flow' ? flowPlugin(/\.js$/) : tscPlugin(),
+    types === 'flow' ? flowPlugin(/\.js$|\.jsx$/) : tscPlugin(),
     sassPlugin(),
   ];
 
