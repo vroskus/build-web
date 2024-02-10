@@ -12,7 +12,7 @@
     "esbuild"
   ],
   "engines": {
-    "node": ">=12"
+    "node": ">=18"
   },
   "main": "dist/index.js",
   "files": [
