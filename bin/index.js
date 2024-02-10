@@ -15,9 +15,10 @@ program
   .option('-i, --input-file <path>', 'input file path', 'src/index.js')
   .option('-x, --index-html-dir <path>', 'index.html file dir path', 'public')
   .option('-o, --output-dir <path>', 'output dir path', 'dist')
-  .option('-s, --sourcemap', 'generate source map files')
+  .option('-m, --sourcemap', 'generate source map files')
   .option('-c, --coverage', 'instruct code to collect coverage data')
-  .option('-d, --serve <port>', 'start development server on port')
+  .option('-s, --serve <port>', 'start development server on port')
+  .option('-d, --debug', 'debug build process')
   .version(packageJson.version, '-v, --version')
   .parse(process.argv);
 
@@ -25,6 +26,7 @@ const options = program.opts();
 
 const {
   coverage,
+  debug,
   indexHtmlDir,
   inputFile,
   outputDir,
@@ -35,6 +37,7 @@ const {
 
 const config = {
   coverage,
+  debug,
   indexHtmlDirPath: indexHtmlDir,
   inputFilePath: inputFile,
   outputDirPath: outputDir,

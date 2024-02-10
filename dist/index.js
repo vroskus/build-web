@@ -228,6 +228,7 @@ const getConfigValue = (
 const bundle = async (config) => {
   const {
     customPlugins,
+    debug,
   } = config;
 
   const coverage = getConfigValue(
@@ -274,6 +275,11 @@ const bundle = async (config) => {
     sourcemap,
     types,
   });
+
+  if (debug) {
+    console.log('build config: ', config);
+    console.log('build settings: ', settings);
+  }
 
   await copyFiles({
     indexHtmlDirPath,
