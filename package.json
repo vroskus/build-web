@@ -19,7 +19,7 @@
     "dist/"
   ],
   "bin": {
-    "build": "bin/index.js"
+    "build-web": "bin/index.js"
   },
   "scripts": {
     "test": "echo 'No tests yet'"
