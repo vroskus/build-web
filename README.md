@@ -12,7 +12,7 @@ Call:
 
 ## Usage
 
-1. Just run ```build``` with args:
+1. Just run ```build-web``` with args:
 
 Define static type to use (optional) (default: "tsc"):
 ```-t, --types <flow | tsc>```
@@ -31,3 +31,6 @@ Generate source map files (optional) (default: false):
 
 Instruct code to collect coverage data (optional) (default: false):
 ```-c, --coverage```
+
+Debug configuration (optional) (default: false):
+```-d, --debug```
