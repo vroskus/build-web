@@ -22,7 +22,8 @@
     "build-web": "bin/index.js"
   },
   "scripts": {
-    "test": "echo 'No tests yet'"
+    "test": "echo 'No tests yet'",
+    "build": "echo 'Nothing to build'"
   },
   "dependencies": {
     "browserslist": "^4.23.0",
