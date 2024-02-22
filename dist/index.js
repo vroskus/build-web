@@ -8,7 +8,10 @@ const tscPlugin = require('esbuild-plugin-tsc');
 const {
   esbuildPluginIstanbul,
 } = require('esbuild-plugin-istanbul');
-const browserslistToEsbuild = require('browserslist-to-esbuild');
+const browserslist = require('browserslist');
+const {
+  resolveToEsbuildTarget,
+} = require('esbuild-plugin-browserslist');
 
 const preparedSettings = ({
   coverage,
@@ -77,7 +80,9 @@ const preparedSettings = ({
     ),
     plugins,
     sourcemap,
-    target: browserslistToEsbuild(),
+    target: resolveToEsbuildTarget(browserslist(), {
+      printUnknownTargets: false,
+    }),
   };
 };
 

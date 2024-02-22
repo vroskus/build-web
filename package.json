@@ -26,9 +26,9 @@
   },
   "dependencies": {
     "browserslist": "^4.23.0",
-    "browserslist-to-esbuild": "^2.1.1",
     "commander": "^12.0.0",
     "esbuild": "^0.20.0",
+    "esbuild-plugin-browserslist": "^0.11.1",
     "esbuild-plugin-flow": "^0.3.2",
     "esbuild-plugin-istanbul": "^0.3.0",
     "esbuild-plugin-sass": "^1.0.1",
