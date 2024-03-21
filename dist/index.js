@@ -151,7 +151,6 @@ var serve = async ({
   const packageVersion = process.env.npm_package_version || "Unknown version";
   const ctx = await import_esbuild.default.context({
     ...settings,
-    bundle: false,
     minify: false,
     plugins: [
       ...settings.plugins,
