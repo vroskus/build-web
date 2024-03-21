@@ -79,7 +79,6 @@ var preparedSettings = ({
     )],
     loader: {
       ".eot": "dataurl",
-      ".js": "jsx",
       ".png": "dataurl",
       ".svg": "dataurl",
       ".ttf": "dataurl",
@@ -152,6 +151,7 @@ var serve = async ({
   const packageVersion = process.env.npm_package_version || "Unknown version";
   const ctx = await import_esbuild.default.context({
     ...settings,
+    bundle: false,
     minify: false,
     plugins: [
       ...settings.plugins,

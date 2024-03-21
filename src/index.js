@@ -68,7 +68,6 @@ const preparedSettings = ({
     )],
     loader: {
       '.eot': 'dataurl',
-      '.js': 'jsx',
       '.png': 'dataurl',
       '.svg': 'dataurl',
       '.ttf': 'dataurl',
@@ -149,6 +148,7 @@ const serve = async ({
 
   const ctx = await esbuild.context({
     ...settings,
+    bundle: false,
     minify: false,
     plugins: [
       ...settings.plugins,
