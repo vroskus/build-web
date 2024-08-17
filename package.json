@@ -12,7 +12,7 @@
     "esbuild"
   ],
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "main": "dist/index.js",
   "files": [
@@ -24,23 +24,23 @@
   "scripts": {
     "test": "npm run test:eslint",
     "test:eslint": "eslint bin --fix",
-    "build": "esbuild src/index.js --platform=node --packages=external --bundle --outfile=dist/index.js"
+    "build": "tsc"
   },
   "dependencies": {
-    "browserslist": "^4.23.0",
-    "commander": "^12.0.0",
-    "esbuild": "^0.20.1",
-    "esbuild-plugin-browserslist": "^0.11.1",
+    "browserslist": "^4.23.3",
+    "commander": "^12.1.0",
+    "esbuild": "^0.23.1",
+    "esbuild-plugin-browserslist": "^0.14.0",
     "esbuild-plugin-flow": "^0.3.2",
     "esbuild-plugin-istanbul": "^0.3.0",
     "esbuild-plugin-sass": "^1.0.1",
-    "esbuild-plugin-tsc": "^0.4.0",
-    "typescript": "^5.3.3"
+    "esbuild-plugin-tsc": "^0.4.0"
   },
   "devDependencies": {
-    "eslint": "^8.57.0",
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-plugin-import": "^2.29.1"
+    "@types/node": "^22.4.0",
+    "@vroskus/eslint-config": "^1.0.6",
+    "eslint": "^9.9.0",
+    "typescript": "^5.5.4"
   },
   "bugs": {
     "url": "https://github.com/vroskus/build-web/issues"

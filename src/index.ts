@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 
-import http from 'http';
-import path from 'path';
-import fs from 'fs';
+import http from 'node:http';
+import path from 'node:path';
+import fs from 'node:fs';
 import esbuild from 'esbuild';
 import sassPlugin from 'esbuild-plugin-sass';
 import flowPlugin from 'esbuild-plugin-flow';
@@ -154,7 +154,7 @@ const serve = async ({
       {
         name: 'watch',
         setup(b) {
-          let start = 0;
+          let start: [number, number] = [0, 0];
 
           b.onStart(() => {
             start = process.hrtime();
@@ -200,7 +200,7 @@ const serve = async ({
           }
 
           res.writeHead(
-            proxyRes.statusCode,
+            proxyRes.statusCode || 0,
             proxyRes.headers,
           );
           proxyRes.pipe(
