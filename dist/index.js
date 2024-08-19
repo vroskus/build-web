@@ -1,3 +1,4 @@
+"use strict";
 /* eslint-disable no-console */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -8,20 +9,24 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import http from 'node:http';
-import path from 'node:path';
-import fs from 'node:fs';
-import esbuild from 'esbuild';
-import sassPlugin from 'esbuild-plugin-sass';
-import flowPlugin from 'esbuild-plugin-flow';
-import tscPlugin from 'esbuild-plugin-tsc';
-import { esbuildPluginIstanbul, } from 'esbuild-plugin-istanbul';
-import browserslist from 'browserslist';
-import { resolveToEsbuildTarget, } from 'esbuild-plugin-browserslist';
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const node_http_1 = __importDefault(require("node:http"));
+const node_path_1 = __importDefault(require("node:path"));
+const node_fs_1 = __importDefault(require("node:fs"));
+const esbuild_1 = __importDefault(require("esbuild"));
+const esbuild_plugin_sass_1 = __importDefault(require("esbuild-plugin-sass"));
+const esbuild_plugin_flow_1 = __importDefault(require("esbuild-plugin-flow"));
+const esbuild_plugin_tsc_1 = __importDefault(require("esbuild-plugin-tsc"));
+const esbuild_plugin_istanbul_1 = require("esbuild-plugin-istanbul");
+const browserslist_1 = __importDefault(require("browserslist"));
+const esbuild_plugin_browserslist_1 = require("esbuild-plugin-browserslist");
 const preparedSettings = ({ coverage, customPlugins, inputFilePath, outputDirPath, sourcemap, types, }) => {
     const plugins = [
-        types === 'flow' ? flowPlugin(/\.js$|\.jsx$/) : tscPlugin(),
-        sassPlugin(),
+        types === 'flow' ? (0, esbuild_plugin_flow_1.default)(/\.js$|\.jsx$/) : (0, esbuild_plugin_tsc_1.default)(),
+        (0, esbuild_plugin_sass_1.default)(),
     ];
     if (Array.isArray(customPlugins)) {
         customPlugins.forEach((customPlugin) => {
@@ -29,22 +34,22 @@ const preparedSettings = ({ coverage, customPlugins, inputFilePath, outputDirPat
         });
     }
     if (coverage) {
-        plugins.push(esbuildPluginIstanbul({
+        plugins.push((0, esbuild_plugin_istanbul_1.esbuildPluginIstanbul)({
             filter: /\.[cm]?js$/,
             loader: 'js',
             name: 'istanbul-loader-js',
         }));
-        plugins.push(esbuildPluginIstanbul({
+        plugins.push((0, esbuild_plugin_istanbul_1.esbuildPluginIstanbul)({
             filter: /\.jsx$/,
             loader: 'jsx',
             name: 'istanbul-loader-jsx',
         }));
-        plugins.push(esbuildPluginIstanbul({
+        plugins.push((0, esbuild_plugin_istanbul_1.esbuildPluginIstanbul)({
             filter: /\.[cm]?ts$/,
             loader: 'ts',
             name: 'istanbul-loader-ts',
         }));
-        plugins.push(esbuildPluginIstanbul({
+        plugins.push((0, esbuild_plugin_istanbul_1.esbuildPluginIstanbul)({
             filter: /\.tsx$/,
             loader: 'tsx',
             name: 'istanbul-loader-tsx',
@@ -52,7 +57,7 @@ const preparedSettings = ({ coverage, customPlugins, inputFilePath, outputDirPat
     }
     return {
         bundle: true,
-        entryPoints: [path.join(process.cwd(), inputFilePath)],
+        entryPoints: [node_path_1.default.join(process.cwd(), inputFilePath)],
         loader: {
             '.eot': 'dataurl',
             '.png': 'dataurl',
@@ -62,35 +67,35 @@ const preparedSettings = ({ coverage, customPlugins, inputFilePath, outputDirPat
             '.woff2': 'dataurl',
         },
         minify: true,
-        outfile: path.join(process.cwd(), `${outputDirPath}/index.js`),
+        outfile: node_path_1.default.join(process.cwd(), `${outputDirPath}/index.js`),
         plugins,
         sourcemap,
-        target: resolveToEsbuildTarget(browserslist(), {
+        target: (0, esbuild_plugin_browserslist_1.resolveToEsbuildTarget)((0, browserslist_1.default)(), {
             printUnknownTargets: false,
         }),
     };
 };
 const build = (_a) => __awaiter(void 0, [_a], void 0, function* ({ settings, }) {
-    yield esbuild.build(settings);
+    yield esbuild_1.default.build(settings);
 });
 const copyFiles = (_a) => __awaiter(void 0, [_a], void 0, function* ({ indexHtmlDirPath, outputDirPath, }) {
-    fs.cpSync(path.join(process.cwd(), indexHtmlDirPath), path.join(process.cwd(), outputDirPath), {
+    node_fs_1.default.cpSync(node_path_1.default.join(process.cwd(), indexHtmlDirPath), node_path_1.default.join(process.cwd(), outputDirPath), {
         recursive: true,
     });
-    const indexHtmlFilePath = path.join(process.cwd(), `${outputDirPath}/index.html`);
-    let indexHtmlFile = fs.readFileSync(indexHtmlFilePath, {
+    const indexHtmlFilePath = node_path_1.default.join(process.cwd(), `${outputDirPath}/index.html`);
+    let indexHtmlFile = node_fs_1.default.readFileSync(indexHtmlFilePath, {
         encoding: 'utf8',
         flag: 'r',
     });
     indexHtmlFile = indexHtmlFile.replace(/\?ts/g, `?${new Date().getTime()}`);
-    fs.writeFileSync(indexHtmlFilePath, indexHtmlFile, {
+    node_fs_1.default.writeFileSync(indexHtmlFilePath, indexHtmlFile, {
         encoding: 'utf8',
     });
 });
 const serve = (_a) => __awaiter(void 0, [_a], void 0, function* ({ outputDirPath, servePort, settings, }) {
     const packageName = process.env.npm_package_name || 'Unknown package';
     const packageVersion = process.env.npm_package_version || 'Unknown version';
-    const ctx = yield esbuild.context(Object.assign(Object.assign({}, settings), { minify: false, plugins: [
+    const ctx = yield esbuild_1.default.context(Object.assign(Object.assign({}, settings), { minify: false, plugins: [
             ...settings.plugins,
             {
                 name: 'watch',
@@ -111,7 +116,7 @@ const serve = (_a) => __awaiter(void 0, [_a], void 0, function* ({ outputDirPath
     const innerServer = yield ctx.serve({
         servedir: outputDirPath,
     });
-    http
+    node_http_1.default
         .createServer((req, res) => {
         const options = {
             headers: req.headers,
@@ -120,9 +125,9 @@ const serve = (_a) => __awaiter(void 0, [_a], void 0, function* ({ outputDirPath
             path: req.url,
             port: innerServer.port,
         };
-        const proxyReq = http.request(options, (proxyRes) => {
+        const proxyReq = node_http_1.default.request(options, (proxyRes) => {
             if (proxyRes.statusCode === 404) {
-                const index = fs.createReadStream(`${outputDirPath}/index.html`);
+                const index = node_fs_1.default.createReadStream(`${outputDirPath}/index.html`);
                 return index.pipe(res);
             }
             res.writeHead(proxyRes.statusCode || 0, proxyRes.headers);
