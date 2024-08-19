@@ -81,9 +81,12 @@ const preparedSettings = ({
     ),
     plugins,
     sourcemap,
-    target: resolveToEsbuildTarget(browserslist(), {
-      printUnknownTargets: false,
-    }),
+    target: resolveToEsbuildTarget(
+      browserslist(),
+      {
+        printUnknownTargets: false,
+      },
+    ),
   };
 };
 
@@ -285,8 +288,14 @@ const bundle = async (config) => {
   });
 
   if (debug) {
-    console.log('build config: ', config);
-    console.log('build settings: ', settings);
+    console.log(
+      'build config: ',
+      config,
+    );
+    console.log(
+      'build settings: ',
+      settings,
+    );
   }
 
   await copyFiles({
@@ -307,6 +316,6 @@ const bundle = async (config) => {
   }
 };
 
-module.exports = {
+export default {
   bundle,
 };

@@ -181,6 +181,6 @@ const bundle = (config) => __awaiter(void 0, void 0, void 0, function* () {
         });
     }
 });
-module.exports = {
+exports.default = {
     bundle,
 };
