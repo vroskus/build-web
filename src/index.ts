@@ -236,7 +236,7 @@ const getConfigValue = (
   defaultValue,
 ) => configParam || process.env[envParam] || defaultValue;
 
-const bundle = async (config) => {
+export const bundle = async (config) => {
   const {
     customPlugins,
     debug,
