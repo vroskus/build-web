@@ -61,6 +61,9 @@ const preparedSettings = ({ coverage, customPlugins, inputFilePath, outputDirPat
         entryPoints: [node_path_1.default.join(process.cwd(), inputFilePath)],
         loader: {
             '.eot': 'dataurl',
+            '.gif': 'dataurl',
+            '.jpeg': 'dataurl',
+            '.jpg': 'dataurl',
             '.png': 'dataurl',
             '.svg': 'dataurl',
             '.ttf': 'dataurl',

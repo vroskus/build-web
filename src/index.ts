@@ -68,6 +68,9 @@ const preparedSettings = ({
     )],
     loader: {
       '.eot': 'dataurl',
+      '.gif': 'dataurl',
+      '.jpeg': 'dataurl',
+      '.jpg': 'dataurl',
       '.png': 'dataurl',
       '.svg': 'dataurl',
       '.ttf': 'dataurl',
