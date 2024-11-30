@@ -37,9 +37,9 @@
     "esbuild-plugin-tsc": "^0.4.0"
   },
   "devDependencies": {
-    "@types/node": "^22.4.1",
+    "@types/node": "^22.10.1",
     "@vroskus/eslint-config": "1.0.13",
-    "typescript": "^5.5.4"
+    "typescript": "^5.7.2"
   },
   "bugs": {
     "url": "https://github.com/vroskus/build-web/issues"
