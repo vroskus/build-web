@@ -104,15 +104,18 @@ const serve = (_a) => __awaiter(void 0, [_a], void 0, function* ({ outputDirPath
             {
                 name: 'watch',
                 setup(b) {
-                    let start = [0, 0];
+                    const initialStartTime = 0;
+                    let start = [initialStartTime, initialStartTime];
                     b.onStart(() => {
                         start = process.hrtime();
                         console.log('Starting build...');
                     });
                     b.onEnd(() => {
                         const end = process.hrtime(start);
-                        const duration = (end[0] * 1000000000 + end[1]) / 1000000000;
-                        console.log(`Built in: ${duration.toFixed(2)}s`);
+                        const milliseconds = 1000000000;
+                        const duration = (end[0] * milliseconds + end[1]) / milliseconds;
+                        const digitsAfterComma = 2;
+                        console.log(`Built in: ${duration.toFixed(digitsAfterComma)}s`);
                     });
                 },
             },
@@ -130,11 +133,13 @@ const serve = (_a) => __awaiter(void 0, [_a], void 0, function* ({ outputDirPath
             port: innerServer.port,
         };
         const proxyReq = node_http_1.default.request(options, (proxyRes) => {
-            if (proxyRes.statusCode === 404) {
+            const notFountStatusCode = 404;
+            const errorStatusCode = 0;
+            if (proxyRes.statusCode === notFountStatusCode) {
                 const index = node_fs_1.default.createReadStream(`${outputDirPath}/index.html`);
                 return index.pipe(res);
             }
-            res.writeHead(proxyRes.statusCode || 0, proxyRes.headers);
+            res.writeHead(proxyRes.statusCode || errorStatusCode, proxyRes.headers);
             proxyRes.pipe(res, {
                 end: true,
             });
@@ -149,11 +154,12 @@ const serve = (_a) => __awaiter(void 0, [_a], void 0, function* ({ outputDirPath
 const getConfigValue = (configParam, envParam, defaultValue) => configParam || process.env[envParam] || defaultValue;
 const bundle = (config) => __awaiter(void 0, void 0, void 0, function* () {
     const { customPlugins, debug, } = config;
+    const defaultServerPort = 8080;
     const coverage = getConfigValue(config.coverage, 'COVERAGE', false);
     const indexHtmlDirPath = getConfigValue(config.indexHtmlDirPath, 'INDEX_PATH', 'public');
     const inputFilePath = getConfigValue(config.inputFilePath, 'SOURCE_FILE_PATH', 'src/index.js');
     const outputDirPath = getConfigValue(config.outputDirPath, 'BUILD_PATH', 'dist');
-    const servePort = getConfigValue(config.servePort, 'SERVE', 0);
+    const servePort = getConfigValue(config.servePort, 'SERVE', defaultServerPort);
     const sourcemap = getConfigValue(config.sourcemap, 'SOURCEMAP', true);
     const types = getConfigValue(config.types, 'TYPES', 'tsc');
     const settings = preparedSettings({

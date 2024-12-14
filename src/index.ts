@@ -160,7 +160,8 @@ const serve = async ({
       {
         name: 'watch',
         setup(b) {
-          let start: [number, number] = [0, 0];
+          const initialStartTime = 0;
+          let start: [number, number] = [initialStartTime, initialStartTime];
 
           b.onStart(() => {
             start = process.hrtime();
@@ -170,10 +171,12 @@ const serve = async ({
           b.onEnd(() => {
             const end = process.hrtime(start);
 
-            const duration = (end[0] * 1000000000 + end[1]) / 1000000000;
+            const milliseconds = 1000000000;
+            const duration = (end[0] * milliseconds + end[1]) / milliseconds;
+            const digitsAfterComma = 2;
 
             console.log(
-              `Built in: ${duration.toFixed(2)}s`,
+              `Built in: ${duration.toFixed(digitsAfterComma)}s`,
             );
           });
         },
@@ -199,14 +202,17 @@ const serve = async ({
       const proxyReq = http.request(
         options,
         (proxyRes) => {
-          if (proxyRes.statusCode === 404) {
+          const notFountStatusCode = 404;
+          const errorStatusCode = 0;
+
+          if (proxyRes.statusCode === notFountStatusCode) {
             const index = fs.createReadStream(`${outputDirPath}/index.html`);
 
             return index.pipe(res);
           }
 
           res.writeHead(
-            proxyRes.statusCode || 0,
+            proxyRes.statusCode || errorStatusCode,
             proxyRes.headers,
           );
           proxyRes.pipe(
@@ -245,6 +251,8 @@ export const bundle = async (config) => {
     debug,
   } = config;
 
+  const defaultServerPort = 8080;
+
   const coverage = getConfigValue(
     config.coverage,
     'COVERAGE',
@@ -268,7 +276,7 @@ export const bundle = async (config) => {
   const servePort = getConfigValue(
     config.servePort,
     'SERVE',
-    0,
+    defaultServerPort,
   );
   const sourcemap = getConfigValue(
     config.sourcemap,

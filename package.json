@@ -27,7 +27,7 @@
     "build": "tsc"
   },
   "dependencies": {
-    "browserslist": "4.24.2",
+    "browserslist": "^4.24.3",
     "commander": "^12.1.0",
     "esbuild": "0.24.0",
     "esbuild-plugin-browserslist": "0.15.0",
@@ -37,8 +37,8 @@
     "esbuild-plugin-tsc": "^0.4.0"
   },
   "devDependencies": {
-    "@types/node": "^22.10.1",
-    "@vroskus/eslint-config": "^1.0.16",
+    "@types/node": "^22.10.2",
+    "@vroskus/eslint-config": "^1.0.17",
     "typescript": "^5.7.2"
   },
   "bugs": {
