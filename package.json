@@ -29,7 +29,7 @@
   "dependencies": {
     "browserslist": "^4.24.3",
     "commander": "^12.1.0",
-    "esbuild": "0.24.0",
+    "esbuild": "^0.24.2",
     "esbuild-plugin-browserslist": "0.15.0",
     "esbuild-plugin-flow": "^0.3.2",
     "esbuild-plugin-istanbul": "^0.3.0",
