@@ -15,6 +15,8 @@ import {
   resolveToEsbuildTarget,
 } from 'esbuild-plugin-browserslist';
 
+const milliseconds: number = 1000000000;
+
 const preparedSettings = ({
   coverage,
   customPlugins,
@@ -160,7 +162,7 @@ const serve = async ({
       {
         name: 'watch',
         setup(b) {
-          const initialStartTime = 0;
+          const initialStartTime: number = 0;
           let start: [number, number] = [initialStartTime, initialStartTime];
 
           b.onStart(() => {
@@ -171,9 +173,8 @@ const serve = async ({
           b.onEnd(() => {
             const end = process.hrtime(start);
 
-            const milliseconds = 1000000000;
             const duration = (end[0] * milliseconds + end[1]) / milliseconds;
-            const digitsAfterComma = 2;
+            const digitsAfterComma: number = 2;
 
             console.log(
               `Built in: ${duration.toFixed(digitsAfterComma)}s`,
@@ -202,17 +203,17 @@ const serve = async ({
       const proxyReq = http.request(
         options,
         (proxyRes) => {
-          const notFountStatusCode = 404;
-          const errorStatusCode = 0;
+          const notFountStatus: number = 404;
+          const errorStatus: number = 0;
 
-          if (proxyRes.statusCode === notFountStatusCode) {
+          if (proxyRes.statusCode === notFountStatus) {
             const index = fs.createReadStream(`${outputDirPath}/index.html`);
 
             return index.pipe(res);
           }
 
           res.writeHead(
-            proxyRes.statusCode || errorStatusCode,
+            proxyRes.statusCode || errorStatus,
             proxyRes.headers,
           );
           proxyRes.pipe(
@@ -251,7 +252,7 @@ export const bundle = async (config) => {
     debug,
   } = config;
 
-  const defaultServerPort = 8080;
+  const noneServerPort = 0;
 
   const coverage = getConfigValue(
     config.coverage,
@@ -276,7 +277,7 @@ export const bundle = async (config) => {
   const servePort = getConfigValue(
     config.servePort,
     'SERVE',
-    defaultServerPort,
+    noneServerPort,
   );
   const sourcemap = getConfigValue(
     config.sourcemap,

@@ -24,6 +24,7 @@ const esbuild_plugin_tsc_1 = __importDefault(require("esbuild-plugin-tsc"));
 const esbuild_plugin_istanbul_1 = require("esbuild-plugin-istanbul");
 const browserslist_1 = __importDefault(require("browserslist"));
 const esbuild_plugin_browserslist_1 = require("esbuild-plugin-browserslist");
+const milliseconds = 1000000000;
 const preparedSettings = ({ coverage, customPlugins, inputFilePath, outputDirPath, sourcemap, types, }) => {
     const plugins = [
         types === 'flow' ? (0, esbuild_plugin_flow_1.default)(/\.js$|\.jsx$/) : (0, esbuild_plugin_tsc_1.default)(),
@@ -112,7 +113,6 @@ const serve = (_a) => __awaiter(void 0, [_a], void 0, function* ({ outputDirPath
                     });
                     b.onEnd(() => {
                         const end = process.hrtime(start);
-                        const milliseconds = 1000000000;
                         const duration = (end[0] * milliseconds + end[1]) / milliseconds;
                         const digitsAfterComma = 2;
                         console.log(`Built in: ${duration.toFixed(digitsAfterComma)}s`);
@@ -133,13 +133,13 @@ const serve = (_a) => __awaiter(void 0, [_a], void 0, function* ({ outputDirPath
             port: innerServer.port,
         };
         const proxyReq = node_http_1.default.request(options, (proxyRes) => {
-            const notFountStatusCode = 404;
-            const errorStatusCode = 0;
-            if (proxyRes.statusCode === notFountStatusCode) {
+            const notFountStatus = 404;
+            const errorStatus = 0;
+            if (proxyRes.statusCode === notFountStatus) {
                 const index = node_fs_1.default.createReadStream(`${outputDirPath}/index.html`);
                 return index.pipe(res);
             }
-            res.writeHead(proxyRes.statusCode || errorStatusCode, proxyRes.headers);
+            res.writeHead(proxyRes.statusCode || errorStatus, proxyRes.headers);
             proxyRes.pipe(res, {
                 end: true,
             });
@@ -154,12 +154,12 @@ const serve = (_a) => __awaiter(void 0, [_a], void 0, function* ({ outputDirPath
 const getConfigValue = (configParam, envParam, defaultValue) => configParam || process.env[envParam] || defaultValue;
 const bundle = (config) => __awaiter(void 0, void 0, void 0, function* () {
     const { customPlugins, debug, } = config;
-    const defaultServerPort = 8080;
+    const noneServerPort = 0;
     const coverage = getConfigValue(config.coverage, 'COVERAGE', false);
     const indexHtmlDirPath = getConfigValue(config.indexHtmlDirPath, 'INDEX_PATH', 'public');
     const inputFilePath = getConfigValue(config.inputFilePath, 'SOURCE_FILE_PATH', 'src/index.js');
     const outputDirPath = getConfigValue(config.outputDirPath, 'BUILD_PATH', 'dist');
-    const servePort = getConfigValue(config.servePort, 'SERVE', defaultServerPort);
+    const servePort = getConfigValue(config.servePort, 'SERVE', noneServerPort);
     const sourcemap = getConfigValue(config.sourcemap, 'SOURCEMAP', true);
     const types = getConfigValue(config.types, 'TYPES', 'tsc');
     const settings = preparedSettings({
