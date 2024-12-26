@@ -38,7 +38,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
-    "@vroskus/eslint-config": "^1.0.21",
+    "@vroskus/eslint-config": "^1.0.23",
     "typescript": "^5.7.2"
   },
   "bugs": {
