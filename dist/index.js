@@ -119,7 +119,7 @@ const serve = (_a) => __awaiter(void 0, [_a], void 0, function* ({ outputDirPath
                     });
                 },
             },
-        ], sourcemap: false }));
+        ] }));
     const innerServer = yield ctx.serve({
         servedir: outputDirPath,
     });

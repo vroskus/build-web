@@ -183,7 +183,6 @@ const serve = async ({
         },
       },
     ],
-    sourcemap: false,
   });
 
   const innerServer = await ctx.serve({
