@@ -160,7 +160,7 @@ const bundle = (config) => __awaiter(void 0, void 0, void 0, function* () {
     const inputFilePath = getConfigValue(config.inputFilePath, 'SOURCE_FILE_PATH', 'src/index.js');
     const outputDirPath = getConfigValue(config.outputDirPath, 'BUILD_PATH', 'dist');
     const servePort = getConfigValue(config.servePort, 'SERVE', noneServerPort);
-    const sourcemap = getConfigValue(config.sourcemap, 'SOURCEMAP', true);
+    const sourcemap = getConfigValue(config.sourcemap, 'SOURCEMAP', false);
     const types = getConfigValue(config.types, 'TYPES', 'tsc');
     const settings = preparedSettings({
         coverage,

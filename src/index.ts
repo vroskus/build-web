@@ -281,7 +281,7 @@ export const bundle = async (config) => {
   const sourcemap = getConfigValue(
     config.sourcemap,
     'SOURCEMAP',
-    true,
+    false,
   );
   const types = getConfigValue(
     config.types,
