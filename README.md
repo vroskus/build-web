@@ -26,6 +26,9 @@ Index.html file dir path (optional) (default: "public"):
 Output dir path (optional) (default: "dist"):
 ```-o, --output-dir <path>```
 
+Output file name (optional) (default: "index.js"):
+```-f, --output-file <filename>```
+
 Generate source map files (optional) (default: false):
 ```-s, --sourcemap```
 

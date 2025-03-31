@@ -22,6 +22,7 @@ const preparedSettings = ({
   customPlugins,
   inputFilePath,
   outputDirPath,
+  outputFileName,
   sourcemap,
   types,
 }) => {
@@ -82,7 +83,7 @@ const preparedSettings = ({
     minify: true,
     outfile: path.join(
       process.cwd(),
-      `${outputDirPath}/index.js`,
+      `${outputDirPath}/${outputFileName}`,
     ),
     plugins,
     sourcemap,
@@ -273,6 +274,11 @@ export const bundle = async (config) => {
     'BUILD_PATH',
     'dist',
   );
+  const outputFileName = getConfigValue(
+    config.outputFileName,
+    'BUILD_FILE',
+    'index.js',
+  );
   const servePort = getConfigValue(
     config.servePort,
     'SERVE',
@@ -294,6 +300,7 @@ export const bundle = async (config) => {
     customPlugins,
     inputFilePath,
     outputDirPath,
+    outputFileName,
     sourcemap,
     types,
   });

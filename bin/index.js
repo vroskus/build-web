@@ -32,6 +32,11 @@ program
     'dist',
   )
   .option(
+    '-f, --output-file <filename>',
+    'output file name',
+    'index.js',
+  )
+  .option(
     '-m, --sourcemap',
     'generate source map files',
   )
@@ -61,6 +66,7 @@ const {
   indexHtmlDir,
   inputFile,
   outputDir,
+  outputFile,
   serve,
   sourcemap,
   types,
@@ -72,6 +78,7 @@ const config = {
   indexHtmlDirPath: indexHtmlDir,
   inputFilePath: inputFile,
   outputDirPath: outputDir,
+  outputFileName: outputFile,
   servePort: serve,
   sourcemap,
   types,
