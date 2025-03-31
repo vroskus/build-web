@@ -15,19 +15,55 @@ import {
   resolveToEsbuildTarget,
 } from 'esbuild-plugin-browserslist';
 
+// Types
+import type {
+  BuildOptions,
+  Plugin,
+} from 'esbuild';
+
+// Enums
+enum Types {
+  flow = 'flow',
+  tsc = 'tsc',
+}
+
+type $Config = {
+  coverage: boolean;
+  customOptions?: BuildOptions;
+  customPlugins?: Array<Plugin>;
+  debug?: boolean;
+  indexHtmlDirPath?: string;
+  inputFilePath?: string;
+  outputDirPath?: string;
+  outputFileName?: string;
+  servePort?: number;
+  sourcemap?: boolean;
+  types?: Types;
+};
+
 const milliseconds: number = 1000000000;
 
-const preparedSettings = ({
+const preparedOptions = ({
   coverage,
+  customOptions,
   customPlugins,
   inputFilePath,
   outputDirPath,
   outputFileName,
   sourcemap,
   types,
-}) => {
+}: {
+  coverage: boolean;
+  customOptions?: BuildOptions;
+  customPlugins?: Array<Plugin>;
+  inputFilePath: string;
+  outputDirPath: string;
+  outputFileName: string;
+  sourcemap: boolean;
+  types: Types;
+}): BuildOptions => {
   const plugins = [
-    types === 'flow' ? flowPlugin(/\.js$|\.jsx$/) : tscPlugin(),
+    types === Types.flow ? flowPlugin(/\.js$|\.jsx$/) : tscPlugin(),
     sassPlugin(),
   ];
 
@@ -64,6 +100,7 @@ const preparedSettings = ({
   }
 
   return {
+    ...customOptions,
     bundle: true,
     entryPoints: [path.join(
       process.cwd(),
@@ -96,16 +133,16 @@ const preparedSettings = ({
   };
 };
 
-const build = async ({
-  settings,
-}) => {
-  await esbuild.build(settings);
+const build = async (
+  options: BuildOptions,
+): Promise<void> => {
+  await esbuild.build(options);
 };
 
 const copyFiles = async ({
   indexHtmlDirPath,
   outputDirPath,
-}) => {
+}): Promise<void> => {
   fs.cpSync(
     path.join(
       process.cwd(),
@@ -148,18 +185,18 @@ const copyFiles = async ({
 };
 
 const serve = async ({
+  options,
   outputDirPath,
   servePort,
-  settings,
-}) => {
+}): Promise<void> => {
   const packageName = process.env.npm_package_name || 'Unknown package';
   const packageVersion = process.env.npm_package_version || 'Unknown version';
 
   const ctx = await esbuild.context({
-    ...settings,
+    ...options,
     minify: false,
     plugins: [
-      ...settings.plugins,
+      ...options.plugins,
       {
         name: 'watch',
         setup(b) {
@@ -192,16 +229,16 @@ const serve = async ({
 
   http
     .createServer((req, res) => {
-      const options = {
+      const serverOptions = {
         headers: req.headers,
-        hostname: innerServer.host,
+        hostname: innerServer.hosts[0],
         method: req.method,
         path: req.url,
         port: innerServer.port,
       };
 
       const proxyReq = http.request(
-        options,
+        serverOptions,
         (proxyRes) => {
           const notFountStatus: number = 404;
           const errorStatus: number = 0;
@@ -246,57 +283,59 @@ const getConfigValue = (
   defaultValue,
 ) => configParam || process.env[envParam] || defaultValue;
 
-export const bundle = async (config) => {
+export const bundle = async (config: $Config) => {
   const {
+    customOptions,
     customPlugins,
     debug,
   } = config;
 
-  const noneServerPort = 0;
+  const noneServerPort: number = 0;
 
   const coverage = getConfigValue(
     config.coverage,
     'COVERAGE',
     false,
   );
-  const indexHtmlDirPath = getConfigValue(
+  const indexHtmlDirPath: string = getConfigValue(
     config.indexHtmlDirPath,
     'INDEX_PATH',
     'public',
   );
-  const inputFilePath = getConfigValue(
+  const inputFilePath: string = getConfigValue(
     config.inputFilePath,
     'SOURCE_FILE_PATH',
     'src/index.js',
   );
-  const outputDirPath = getConfigValue(
+  const outputDirPath: string = getConfigValue(
     config.outputDirPath,
     'BUILD_PATH',
     'dist',
   );
-  const outputFileName = getConfigValue(
+  const outputFileName: string = getConfigValue(
     config.outputFileName,
     'BUILD_FILE',
     'index.js',
   );
-  const servePort = getConfigValue(
+  const servePort: number = getConfigValue(
     config.servePort,
     'SERVE',
     noneServerPort,
   );
-  const sourcemap = getConfigValue(
+  const sourcemap: boolean = getConfigValue(
     config.sourcemap,
     'SOURCEMAP',
     false,
   );
-  const types = getConfigValue(
+  const types: Types = getConfigValue(
     config.types,
     'TYPES',
-    'tsc',
+    Types.tsc,
   );
 
-  const settings = preparedSettings({
+  const options = preparedOptions({
     coverage,
+    customOptions,
     customPlugins,
     inputFilePath,
     outputDirPath,
@@ -311,8 +350,8 @@ export const bundle = async (config) => {
       config,
     );
     console.log(
-      'build settings: ',
-      settings,
+      'build options: ',
+      options,
     );
   }
 
@@ -323,14 +362,12 @@ export const bundle = async (config) => {
 
   if (servePort) {
     await serve({
+      options,
       outputDirPath,
       servePort,
-      settings,
     });
   } else {
-    await build({
-      settings,
-    });
+    await build(options);
   }
 };
 
