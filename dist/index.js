@@ -24,10 +24,16 @@ const esbuild_plugin_tsc_1 = __importDefault(require("esbuild-plugin-tsc"));
 const esbuild_plugin_istanbul_1 = require("esbuild-plugin-istanbul");
 const browserslist_1 = __importDefault(require("browserslist"));
 const esbuild_plugin_browserslist_1 = require("esbuild-plugin-browserslist");
+// Enums
+var Types;
+(function (Types) {
+    Types["flow"] = "flow";
+    Types["tsc"] = "tsc";
+})(Types || (Types = {}));
 const milliseconds = 1000000000;
-const preparedSettings = ({ coverage, customPlugins, inputFilePath, outputDirPath, sourcemap, types, }) => {
+const preparedOptions = ({ coverage, customOptions, customPlugins, inputFilePath, outputDirPath, outputFileName, sourcemap, types, }) => {
     const plugins = [
-        types === 'flow' ? (0, esbuild_plugin_flow_1.default)(/\.js$|\.jsx$/) : (0, esbuild_plugin_tsc_1.default)(),
+        types === Types.flow ? (0, esbuild_plugin_flow_1.default)(/\.js$|\.jsx$/) : (0, esbuild_plugin_tsc_1.default)(),
         (0, esbuild_plugin_sass_1.default)(),
     ];
     if (Array.isArray(customPlugins)) {
@@ -57,10 +63,7 @@ const preparedSettings = ({ coverage, customPlugins, inputFilePath, outputDirPat
             name: 'istanbul-loader-tsx',
         }));
     }
-    return {
-        bundle: true,
-        entryPoints: [node_path_1.default.join(process.cwd(), inputFilePath)],
-        loader: {
+    return Object.assign(Object.assign({}, customOptions), { bundle: true, entryPoints: [node_path_1.default.join(process.cwd(), inputFilePath)], loader: {
             '.eot': 'dataurl',
             '.gif': 'dataurl',
             '.jpeg': 'dataurl',
@@ -70,18 +73,13 @@ const preparedSettings = ({ coverage, customPlugins, inputFilePath, outputDirPat
             '.ttf': 'dataurl',
             '.woff': 'dataurl',
             '.woff2': 'dataurl',
-        },
-        minify: true,
-        outfile: node_path_1.default.join(process.cwd(), `${outputDirPath}/index.js`),
-        plugins,
-        sourcemap,
-        target: (0, esbuild_plugin_browserslist_1.resolveToEsbuildTarget)((0, browserslist_1.default)(), {
+        }, minify: true, outfile: node_path_1.default.join(process.cwd(), `${outputDirPath}/${outputFileName}`), plugins,
+        sourcemap, target: (0, esbuild_plugin_browserslist_1.resolveToEsbuildTarget)((0, browserslist_1.default)(), {
             printUnknownTargets: false,
-        }),
-    };
+        }) });
 };
-const build = (_a) => __awaiter(void 0, [_a], void 0, function* ({ settings, }) {
-    yield esbuild_1.default.build(settings);
+const build = (options) => __awaiter(void 0, void 0, void 0, function* () {
+    yield esbuild_1.default.build(options);
 });
 const copyFiles = (_a) => __awaiter(void 0, [_a], void 0, function* ({ indexHtmlDirPath, outputDirPath, }) {
     node_fs_1.default.cpSync(node_path_1.default.join(process.cwd(), indexHtmlDirPath), node_path_1.default.join(process.cwd(), outputDirPath), {
@@ -97,11 +95,11 @@ const copyFiles = (_a) => __awaiter(void 0, [_a], void 0, function* ({ indexHtml
         encoding: 'utf8',
     });
 });
-const serve = (_a) => __awaiter(void 0, [_a], void 0, function* ({ outputDirPath, servePort, settings, }) {
+const serve = (_a) => __awaiter(void 0, [_a], void 0, function* ({ options, outputDirPath, servePort, }) {
     const packageName = process.env.npm_package_name || 'Unknown package';
     const packageVersion = process.env.npm_package_version || 'Unknown version';
-    const ctx = yield esbuild_1.default.context(Object.assign(Object.assign({}, settings), { minify: false, plugins: [
-            ...settings.plugins,
+    const ctx = yield esbuild_1.default.context(Object.assign(Object.assign({}, options), { minify: false, plugins: [
+            ...options.plugins,
             {
                 name: 'watch',
                 setup(b) {
@@ -125,14 +123,14 @@ const serve = (_a) => __awaiter(void 0, [_a], void 0, function* ({ outputDirPath
     });
     node_http_1.default
         .createServer((req, res) => {
-        const options = {
+        const serverOptions = {
             headers: req.headers,
-            hostname: innerServer.host,
+            hostname: innerServer.hosts[0],
             method: req.method,
             path: req.url,
             port: innerServer.port,
         };
-        const proxyReq = node_http_1.default.request(options, (proxyRes) => {
+        const proxyReq = node_http_1.default.request(serverOptions, (proxyRes) => {
             const notFountStatus = 404;
             const errorStatus = 0;
             if (proxyRes.statusCode === notFountStatus) {
@@ -153,26 +151,29 @@ const serve = (_a) => __awaiter(void 0, [_a], void 0, function* ({ outputDirPath
 });
 const getConfigValue = (configParam, envParam, defaultValue) => configParam || process.env[envParam] || defaultValue;
 const bundle = (config) => __awaiter(void 0, void 0, void 0, function* () {
-    const { customPlugins, debug, } = config;
+    const { customOptions, customPlugins, debug, } = config;
     const noneServerPort = 0;
     const coverage = getConfigValue(config.coverage, 'COVERAGE', false);
     const indexHtmlDirPath = getConfigValue(config.indexHtmlDirPath, 'INDEX_PATH', 'public');
     const inputFilePath = getConfigValue(config.inputFilePath, 'SOURCE_FILE_PATH', 'src/index.js');
     const outputDirPath = getConfigValue(config.outputDirPath, 'BUILD_PATH', 'dist');
+    const outputFileName = getConfigValue(config.outputFileName, 'BUILD_FILE', 'index.js');
     const servePort = getConfigValue(config.servePort, 'SERVE', noneServerPort);
     const sourcemap = getConfigValue(config.sourcemap, 'SOURCEMAP', false);
-    const types = getConfigValue(config.types, 'TYPES', 'tsc');
-    const settings = preparedSettings({
+    const types = getConfigValue(config.types, 'TYPES', Types.tsc);
+    const options = preparedOptions({
         coverage,
+        customOptions,
         customPlugins,
         inputFilePath,
         outputDirPath,
+        outputFileName,
         sourcemap,
         types,
     });
     if (debug) {
         console.log('build config: ', config);
-        console.log('build settings: ', settings);
+        console.log('build options: ', options);
     }
     yield copyFiles({
         indexHtmlDirPath,
@@ -180,15 +181,13 @@ const bundle = (config) => __awaiter(void 0, void 0, void 0, function* () {
     });
     if (servePort) {
         yield serve({
+            options,
             outputDirPath,
             servePort,
-            settings,
         });
     }
     else {
-        yield build({
-            settings,
-        });
+        yield build(options);
     }
 });
 exports.bundle = bundle;
