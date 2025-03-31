@@ -133,9 +133,11 @@ const preparedOptions = ({
   };
 };
 
-const build = async (
-  options: BuildOptions,
-): Promise<void> => {
+const build = async ({
+  options,
+}: {
+  options: BuildOptions;
+}): Promise<void> => {
   await esbuild.build(options);
 };
 
@@ -283,7 +285,9 @@ const getConfigValue = (
   defaultValue,
 ) => configParam || process.env[envParam] || defaultValue;
 
-export const bundle = async (config: $Config) => {
+export const bundle = async (
+  config: $Config,
+): Promise<void> => {
   const {
     customOptions,
     customPlugins,
@@ -367,7 +371,9 @@ export const bundle = async (config: $Config) => {
       servePort,
     });
   } else {
-    await build(options);
+    await build({
+      options,
+    });
   }
 };
 

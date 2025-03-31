@@ -78,7 +78,7 @@ const preparedOptions = ({ coverage, customOptions, customPlugins, inputFilePath
             printUnknownTargets: false,
         }) });
 };
-const build = (options) => __awaiter(void 0, void 0, void 0, function* () {
+const build = (_a) => __awaiter(void 0, [_a], void 0, function* ({ options, }) {
     yield esbuild_1.default.build(options);
 });
 const copyFiles = (_a) => __awaiter(void 0, [_a], void 0, function* ({ indexHtmlDirPath, outputDirPath, }) {
@@ -187,7 +187,9 @@ const bundle = (config) => __awaiter(void 0, void 0, void 0, function* () {
         });
     }
     else {
-        yield build(options);
+        yield build({
+            options,
+        });
     }
 });
 exports.bundle = bundle;
