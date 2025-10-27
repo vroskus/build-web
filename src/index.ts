@@ -111,6 +111,7 @@ const preparedOptions = ({
       '.gif': 'dataurl',
       '.jpeg': 'dataurl',
       '.jpg': 'dataurl',
+      '.otf': 'dataurl',
       '.png': 'dataurl',
       '.svg': 'dataurl',
       '.ttf': 'dataurl',

@@ -68,6 +68,7 @@ const preparedOptions = ({ coverage, customOptions, customPlugins, inputFilePath
             '.gif': 'dataurl',
             '.jpeg': 'dataurl',
             '.jpg': 'dataurl',
+            '.otf': 'dataurl',
             '.png': 'dataurl',
             '.svg': 'dataurl',
             '.ttf': 'dataurl',
