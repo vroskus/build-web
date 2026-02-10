@@ -63,7 +63,9 @@ const preparedOptions = ({ coverage, customOptions, customPlugins, inputFilePath
             name: 'istanbul-loader-tsx',
         }));
     }
-    return Object.assign(Object.assign({}, customOptions), { bundle: true, entryPoints: [node_path_1.default.join(process.cwd(), inputFilePath)], loader: {
+    return Object.assign(Object.assign({}, customOptions), { bundle: true, entryPoints: [
+            node_path_1.default.join(process.cwd(), inputFilePath),
+        ], loader: {
             '.eot': 'dataurl',
             '.gif': 'dataurl',
             '.jpeg': 'dataurl',
@@ -105,7 +107,10 @@ const serve = (_a) => __awaiter(void 0, [_a], void 0, function* ({ options, outp
                 name: 'watch',
                 setup(b) {
                     const initialStartTime = 0;
-                    let start = [initialStartTime, initialStartTime];
+                    let start = [
+                        initialStartTime,
+                        initialStartTime,
+                    ];
                     b.onStart(() => {
                         start = process.hrtime();
                         console.log('Starting build...');

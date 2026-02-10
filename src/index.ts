@@ -102,10 +102,12 @@ const preparedOptions = ({
   return {
     ...customOptions,
     bundle: true,
-    entryPoints: [path.join(
-      process.cwd(),
-      inputFilePath,
-    )],
+    entryPoints: [
+      path.join(
+        process.cwd(),
+        inputFilePath,
+      ),
+    ],
     loader: {
       '.eot': 'dataurl',
       '.gif': 'dataurl',
@@ -204,7 +206,10 @@ const serve = async ({
         name: 'watch',
         setup(b) {
           const initialStartTime: number = 0;
-          let start: [number, number] = [initialStartTime, initialStartTime];
+          let start: [number, number] = [
+            initialStartTime,
+            initialStartTime,
+          ];
 
           b.onStart(() => {
             start = process.hrtime();

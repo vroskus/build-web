@@ -22,14 +22,15 @@
     "build-web": "bin/index.js"
   },
   "scripts": {
-    "test": "npm run test:eslint",
+    "test": "npm run test:eslint && npm run test:type",
     "test:eslint": "eslint src bin --fix",
+    "test:type": "tsc",
     "build": "tsc"
   },
   "dependencies": {
     "browserslist": "^4.28.1",
-    "commander": "^14.0.2",
-    "esbuild": "^0.27.2",
+    "commander": "^14.0.3",
+    "esbuild": "^0.27.3",
     "esbuild-plugin-browserslist": "^2.0.0",
     "esbuild-plugin-flow": "^0.3.2",
     "esbuild-plugin-istanbul": "^0.3.0",
@@ -37,8 +38,8 @@
     "esbuild-plugin-tsc": "^0.5.0"
   },
   "devDependencies": {
-    "@types/node": "^25.0.3",
-    "@vroskus/eslint-config": "^1.0.30",
+    "@types/node": "^25.2.3",
+    "@vroskus/eslint-config": "^1.1.1",
     "typescript": "^5.9.3"
   },
   "bugs": {
